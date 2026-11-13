@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -365,7 +365,8 @@ body::before {
     .footer { margin-top: 10px; }
 }
 </style>
-   <!-- Meta Pixel Code -->
+
+<!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -382,6 +383,7 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1468375865483788&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+
 </head>
 
 <body>
@@ -448,20 +450,63 @@ src="https://www.facebook.com/tr?id=1468375865483788&ev=PageView&noscript=1"
     </section>
 </main>
 
+<!-- LIGHTWEIGHT CTA PROTECTION LAYER -->
 <script>
 (function () {
+
+    "use strict";
+
     const joinButton = document.getElementById("joinButton");
 
-    joinButton.addEventListener("click", function () {
+    if (!joinButton) return;
+
+    let activationLocked = false;
+
+    const TELEGRAM_URL = "https://t.me/+0N44zUL69jFhMGU1";
+
+    const LOCK_DURATION = 2500;
+
+    joinButton.addEventListener("click", function (event) {
+
+        // Reject programmatically generated clicks.
+        if (!event.isTrusted) {
+            event.preventDefault();
+            return;
+        }
+
+        // Prevent repeated CTA activation.
+        if (activationLocked) {
+            event.preventDefault();
+            return;
+        }
+
+        activationLocked = true;
+
+        joinButton.disabled = true;
+        joinButton.setAttribute("aria-disabled", "true");
+
+        // Open Telegram directly from the genuine user click.
         window.open(
-            "https://t.me/+0N44zUL69jFhMGU1",
+            TELEGRAM_URL,
             "_blank",
             "noopener,noreferrer"
         );
+
+        // Restore the button after the temporary lock.
+        window.setTimeout(function () {
+
+            activationLocked = false;
+
+            joinButton.disabled = false;
+            joinButton.removeAttribute("aria-disabled");
+
+        }, LOCK_DURATION);
+
     });
+
 })();
 </script>
 
 </body>
 </html>
-
+```
